@@ -8,3 +8,4 @@ langgraph
 sentence-transformers
 langchain-huggingface
 faiss-cpu
+python-dotenv
