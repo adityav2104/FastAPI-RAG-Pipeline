@@ -10,3 +10,4 @@ pydantic
 uvicorn
 flake8
 pytest
+sentence-transformers
