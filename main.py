@@ -51,14 +51,17 @@ async def log_requests(request: Request, call_next):
 
 # Main RAG endpoint
 @app.post("/ask")
+# def ask_question(query: Query):
+#     try:
+#         result = dict(app_graph.invoke({"question": query.question}))
+#         return {
+#             "answer": result.get("final_answer", ""),
+#             "validation": result.get("validation", "")
+#         }
+#     except Exception as e:
+#         print("ASK ERROR:", e)
+#         traceback.print_exc()
+#         raise HTTPException(status_code=500, detail=str(e))
+
 def ask_question(query: Query):
-    try:
-        result = dict(app_graph.invoke({"question": query.question}))
-        return {
-            "answer": result.get("final_answer", ""),
-            "validation": result.get("validation", "")
-        }
-    except Exception as e:
-        print("ASK ERROR:", e)
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=str(e))
+    return {"answer": f"Echo: {query.question}", "validation": "dummy"}
