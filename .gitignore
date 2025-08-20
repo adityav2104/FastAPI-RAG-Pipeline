@@ -6,5 +6,4 @@ venv20/
 json_to_csv.py 
 qa_Automotive.json 
 data/car2.csv 
-faiss_db/
 .env
