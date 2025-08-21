@@ -1,5 +1,5 @@
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv
 
 
 db_path = "faiss_db"
@@ -8,5 +8,5 @@ json_path = "qa_Automotive.json"
 csv2_path = "data/cars2.csv"
 
 
-load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# load_dotenv()
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
