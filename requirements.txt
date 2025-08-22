@@ -1,6 +1,5 @@
 python-dotenv
 langchain-google-genai
-langchain-ollama 
 pandas
 langchain-huggingface
 langchain-community
@@ -12,3 +11,4 @@ flake8
 pytest
 sentence-transformers
 faiss-cpu 
+langchain-groq

@@ -1,6 +1,6 @@
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
-from llms import gemini_llm, llama_llm
+from llms import gemini_llm, groq_llm  
 from retriever import get_retriever
 import json
 
@@ -23,8 +23,7 @@ def generate_and_improve(state: AppState):
     gemini_response = getattr(response, "content", str(response))
     state["draft_answer"] = gemini_response.strip()
 
-   
-    llama_prompt = f"""
+    groq_prompt = f"""
     You are a helpful AI that improves answers for clarity and accuracy.
     Given this answer: {state['draft_answer']}
 
@@ -37,11 +36,12 @@ def generate_and_improve(state: AppState):
         "validation": "<your validation here>"
     }}
     """
-    response2 = llama_llm.invoke(llama_prompt)
-    llama_response = getattr(response2, "content", str(response2)).strip()
+    response2 = groq_llm.invoke(groq_prompt)   
+    groq_response = getattr(response2, "content", str(response2)).strip()
 
+    # Format guardrail
     try:
-        parsed = json.loads(llama_response)
+        parsed = json.loads(groq_response)
         improved = parsed.get("improved", "").strip()
         validation = parsed.get("validation", "").strip()
 
@@ -50,9 +50,9 @@ def generate_and_improve(state: AppState):
 
     except (json.JSONDecodeError, ValueError) as e:
         improved = state["draft_answer"]
-        validation = f"Format Guardrail: Invalid JSON from LLaMA ({e}). Returned Gemini original answer."
+        validation = f"Format Guardrail: Invalid JSON from GROQ LLM ({e}). Returned Gemini original answer."
 
- 
+    # Factuality guardrail
     context_lower = state["context"].lower()
     overlap = sum(1 for word in improved.split() if word.lower() in context_lower)
     if overlap < len(improved.split()) * 0.2:  
@@ -72,5 +72,3 @@ graph.add_edge("retrieve", "generate_improve")
 graph.add_edge("generate_improve", END)
 
 app_graph = graph.compile()
-
-
